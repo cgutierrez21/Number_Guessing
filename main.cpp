@@ -7,10 +7,13 @@ using std::cout, std::endl, std::cin;
 int random_number();
 int set_difficulty();
 bool out_of_games(int);
+double win_percentage(int, int);
 
 
 int main() {
     bool continue_game = true;
+    int games_played{0};
+    int games_won{0};
     // Start the game
     int computer_choice = random_number();
     int life_count = set_difficulty();
@@ -35,6 +38,7 @@ int main() {
 
             // Check life count
             if(life_count == 0){
+                games_played++;
                 continue_game = out_of_games(computer_choice);
                 if(continue_game){
                     computer_choice = random_number();
@@ -44,6 +48,8 @@ int main() {
         }
         else{
             // Player got the win
+            games_played++;
+            games_won++;
             char more_games {'y'};
             cout << "You got it!\nThe number was " << player_guess << "!!!" << endl;
             cout << "Do you want to play another game?\ny for yes and n for no: ";
@@ -60,6 +66,9 @@ int main() {
 
     }
 
+    cout << "Thanks for playing." << endl;
+    cout << "You won " << games_won << " out of " << games_played << "." << endl;
+    cout << "That's about a " << win_percentage(games_played, games_won)<< "% win rate." << endl;
 
     return 0;
 }
@@ -105,4 +114,9 @@ bool out_of_games(int computer_choice){
     }
 
     return true;
+}
+
+double win_percentage(int played_games, int won_games){
+    double win_percent = (double)won_games / played_games * 100;
+    return win_percent;
 }
